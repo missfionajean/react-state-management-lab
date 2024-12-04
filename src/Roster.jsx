@@ -1,16 +1,6 @@
-// imports
 import { useState } from "react";
-import "./App.css";
 
-const App = () => {
-	// state variable for current money
-	const [money, setMoney] = useState(100);
-
-	// state variables for current team
-	const [team, setTeam] = useState([]);
-	const [totalStrength, setTotalStrength] = useState(0);
-	const [totalAgility, setTotalAgility] = useState(0);
-
+const Roster = () => {
 	// state variable for fighter roster
 	const [zombieFighters, setZombieFighters] = useState([
 		{
@@ -85,52 +75,13 @@ const App = () => {
 		},
 	]);
 
-	// function for adding fighter to team
-	const handleAddFighter = (newFighter) => {
-		if (money >= newFighter.price) {
-			setMoney(money - newFighter.price);
-			setTeam([...team, newFighter]);
-		} else {
-			console.log("Not enough money!");
-		}
-	};
+    // function for adding fighter to team
+    const handleAddFighter = () => {
+    }
 
-	// function for removing a fighter from team
-	const handleRemoveFighter = (remFighter) => {
-		setMoney(money + remFighter.price);
-		setTeam(
-			team.filter((fighter) => {
-				fighter.index != remFighter.index;
-			})
-		);
-	};
-
+    // html to be returned when component is called
 	return (
 		<>
-			<h1>Zombie Fighters</h1>
-			<h2>Money: {money}</h2>
-			<h2>Team Strength: {totalStrength}</h2>
-			<h2>Team Agility: {totalAgility}</h2>
-			<h2>Team</h2>
-			<ul>
-				{team.length ? "" : <li>Pick some team members!</li>}
-				{team.map((fighter, index) => (
-					<div className="fighterCard" key={index}>
-						<ul>
-							<li>
-								<img src={fighter.img} alt={fighter.name} />
-							</li>
-							<li>{fighter.name}</li>
-							<li>Price: {fighter.price}</li>
-							<li>Strength: {fighter.strength}</li>
-							<li>Agility: {fighter.agility}</li>
-						</ul>
-						<button onClick={() => handleRemoveFighter(fighter)}>
-							Remove
-						</button>
-					</div>
-				))}
-			</ul>
 			<div className="zombieFighters">
 				{zombieFighters.map((fighter, index) => (
 					<div className="fighterCard" key={index}>
@@ -143,9 +94,7 @@ const App = () => {
 							<li>Strength: {fighter.strength}</li>
 							<li>Agility: {fighter.agility}</li>
 						</ul>
-						<button onClick={() => handleAddFighter(fighter)}>
-							Add
-						</button>
+						<button onClick={handleAddFighter}>Add</button>
 					</div>
 				))}
 			</div>
@@ -153,4 +102,5 @@ const App = () => {
 	);
 };
 
-export default App;
+// exporting as custom component
+export default Roster;
