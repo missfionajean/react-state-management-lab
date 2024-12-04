@@ -88,6 +88,7 @@ const App = () => {
 	// function for adding fighter to team
 	const handleAddFighter = (newFighter) => {
 		if (money >= newFighter.price) {
+      newFighter.id = team.length
 			setMoney(money - newFighter.price);
 			setTeam([...team, newFighter]);
 		} else {
@@ -100,23 +101,39 @@ const App = () => {
 		setMoney(money + remFighter.price);
 		setTeam(
 			team.filter((fighter) => {
-				fighter.index != remFighter.index;
+				return fighter.id !== remFighter.id;
 			})
 		);
+	};
+
+	// functions for total strength and agility
+	const totalStr = (total, fighter) => {
+		return total + fighter.strength;
+	};
+
+	const totalAgi = (total, fighter) => {
+		return total + fighter.agility;
+	};
+
+	const totalScore = (score) => {
+		if (score === "str") {
+			return team.reduce(totalStr, 0);
+		} else if (score === "agi") {
+			return team.reduce(totalAgi, 0);
+		}
 	};
 
 	return (
 		<>
 			<h1>Zombie Fighters</h1>
 			<h2>Money: {money}</h2>
-			<h2>Team Strength: {totalStrength}</h2>
-			<h2>Team Agility: {totalAgility}</h2>
+			<h2>Team Strength: {totalScore("str")}</h2>
+			<h2>Team Agility: {totalScore("agi")}</h2>
 			<h2>Team</h2>
 			<ul>
 				{team.length ? "" : <li>Pick some team members!</li>}
 				{team.map((fighter, index) => (
 					<div className="fighterCard" key={index}>
-						<ul>
 							<li>
 								<img src={fighter.img} alt={fighter.name} />
 							</li>
@@ -124,17 +141,15 @@ const App = () => {
 							<li>Price: {fighter.price}</li>
 							<li>Strength: {fighter.strength}</li>
 							<li>Agility: {fighter.agility}</li>
-						</ul>
 						<button onClick={() => handleRemoveFighter(fighter)}>
 							Remove
 						</button>
 					</div>
 				))}
 			</ul>
-			<div className="zombieFighters">
+			<ul className="zombieFighters">
 				{zombieFighters.map((fighter, index) => (
 					<div className="fighterCard" key={index}>
-						<ul>
 							<li>
 								<img src={fighter.img} alt={fighter.name} />
 							</li>
@@ -142,13 +157,12 @@ const App = () => {
 							<li>Price: {fighter.price}</li>
 							<li>Strength: {fighter.strength}</li>
 							<li>Agility: {fighter.agility}</li>
-						</ul>
 						<button onClick={() => handleAddFighter(fighter)}>
 							Add
 						</button>
 					</div>
 				))}
-			</div>
+			</ul>
 		</>
 	);
 };
